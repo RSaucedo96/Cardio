@@ -21,8 +21,13 @@ except mysql.connector.Error as err:
 else:
   cnx.close()
 
-def new_user(username):
-    tarjeta1=input("hola", username,"que apodo queres ponerle a tu tarjeta?:")
+from user_list.py import user_list
+def new_user():
+    nombre_usuario=input("Ingrese un nombre de usuario:")
+    check=user_list()
+    while nombre_usuario==check:
+        nombre_usuario=input("Ese nombre ya esta tomado, por favor ingrese otro:")
+    tarjeta1=input("hola", nombre_usuario,"que apodo queres ponerle a tu tarjeta?:")
     TABLES = {}
     TABLES[tarjeta1] = (
     "CREATE TABLE `",tarjeta1,"` ("
