@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """
+la funcion crea una tabla para el nuevo usuario.
 Created on Tue Apr 12 11:37:31 2022
 
 @author: Riki
@@ -7,7 +8,9 @@ Created on Tue Apr 12 11:37:31 2022
 import mysql.connector
 from mysql.connector import errorcode
 try:
-  cnx = mysql.connector.connect(user='Leo008008', database='cardio')
+  cnx = mysql.connector.connect(password='Leo008008',
+                                host='localhost',
+                                database='cardio')
 except mysql.connector.Error as err:
   if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
     print("Hay un error con el usuario o la contraseña.")
@@ -20,7 +23,6 @@ else:
 
 def new_user(username):
     tarjeta1=input("hola", username,"que apodo queres ponerle a tu tarjeta?:")
-    
     TABLES = {}
     TABLES[tarjeta1] = (
     "CREATE TABLE `",tarjeta1,"` ("
@@ -29,7 +31,7 @@ def new_user(username):
     "  `precio_total` int NOT NULL,"
     "  `cuotas_total` int NOT NULL,"
     "  `cuotas_pagadas` date NOT NULL,"
-    "  PRIMARY KEY (`emp_no`)"
+    "  PRIMARY KEY (`id_compra`)"
     ") ENGINE=InnoDB")
    
 
