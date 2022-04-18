@@ -6,7 +6,7 @@ Created on Tue Apr 12 11:37:31 2022
 @author: Riki
 """
 import mysql.connector
-import user_list
+from user_list import user_list
 def new_user():
     nombre=input("Ingrese un nombre de usuario:")
     buffer=user_list(nombre)
@@ -21,7 +21,7 @@ def new_user():
                                     host='localhost',
                                     database='cardio')
         curA = cnx.cursor(buffered=True)
-        nombre_usuario=(buffer,)
+        nombre_usuario=(nombre,)
         tarjeta1=(input("hola %s que apodo queres ponerle a tu tarjeta?:"%nombre_usuario),)
         TABLES = {}
         TABLES['tabla_usuario'] = (
