@@ -7,27 +7,31 @@ asi lo ingresa a la base de datos
 """
 
 import mysql.connector
-from mysql.connector import errorcode
-try:
-  cnx = mysql.connector.connect(user='root',
-                                password='Leo008008',
-                                host='localhost',
-                                database='cardio')
-except mysql.connector.Error as err:
-  if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-    print("Hay un error con el usuario o la contraseña.")
-  elif err.errno == errorcode.ER_BAD_DB_ERROR:
-    print("No se encontro una base de datos con ese nombre.")
-  else:
-    print(err)
-else:
-  cnx.close()
-
-def user_list(nombre_usuario):
-    query = ("SELECT nombre_usuario FROM lista_usuarios")
-    buffer=str(nombre_usuario)
-    if buffer in query:
-        return(nombre_usuario)
-    else:    
-        query=("INSERT INTO lista_usuarios (nombre_usuario) VALUES ('",nombre_usuario,"');") 
-            
+def user_list(nombre):
+    cnx = mysql.connector.connect(user='root',
+                              password='Leo008008',
+                              host='localhost',
+                              database='cardio')
+    curA = cnx.cursor(buffered=True)
+    lista_usuarios="SELECT nombre_usuario FROM lista_usuarios;"
+    curA.execute(lista_usuarios)
+    for (nombre_usuario) in curA:
+        if nombre==nombre_usuario:
+            curA.close()
+            cnx.close()
+            return nombre
+    curA.close()
+    cnx.close()
+    
+    nombre_usuario_tupple=(nombre,)
+    cnx = mysql.connector.connect(user='root',
+                              password='Leo008008',
+                              host='localhost',
+                              database='cardio')
+    curB = cnx.cursor(buffered=True)
+    agrega_nombre=("INSERT INTO lista_usuarios (nombre_usuario)"
+                   "VALUES ('%s');")
+    curB.execute=(agrega_nombre,nombre_usuario_tupple)
+    curB.close()
+    cnx.close()
+    return "ok"

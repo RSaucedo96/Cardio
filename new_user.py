@@ -6,51 +6,60 @@ Created on Tue Apr 12 11:37:31 2022
 @author: Riki
 """
 import mysql.connector
-from mysql.connector import errorcode
-try:
-  cnx = mysql.connector.connect(user='root',
-                                password='Leo008008',
-                                host='localhost',
-                                database='cardio')
-except mysql.connector.Error as err:
-  if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-    print("Hay un error con el usuario o la contraseña.")
-  elif err.errno == errorcode.ER_BAD_DB_ERROR:
-    print("No se encontro una base de datos con ese nombre.")
-  else:
-    print(err)
-else:
-  cnx.close()
-
-from user_list.py import user_list
+import user_list
 def new_user():
-    nombre_usuario=input("Ingrese un nombre de usuario:")
-    check=user_list(nombre_usuario)
-    while nombre_usuario==check:
-        nombre_usuario=input("Ese nombre ya esta tomado, por favor ingrese otro:")
-        check=user_list(nombre_usuario)
-    tarjeta1=input("hola", nombre_usuario,"que apodo queres ponerle a tu tarjeta?:")
-    TABLES = {}
-    TABLES[nombre_usuario] = (
-    "CREATE TABLE `",nombre_usuario,"` ("
-    "  `id_compra` int NOT NULL AUTO_INCREMENT,"
-    "  `nombre_compra` varchar(20) NOT NULL,"
-    "  `precio_total` int NOT NULL,"
-    "  `cuotas_total` int NOT NULL,"
-    "  `cuotas_pagadas` date NOT NULL,"
-    "  `tarjeta_usada` int NOT NULL,"
-    "  FOREIGN KEY(`tarjeta_usada`) REFERENCES tarjetas(id_tarjeta) ON DELETE SET NULL"
-    "  PRIMARY KEY (`id_compra`)"
-    ") ENGINE=InnoDB")    
-    userid=("SELECT user_id FROM lista_usuarios" 
-           "WHERE nombre_usuario='",nombre_usuario,"';")
-    query=("INSERT INTO tarjetas (nombre_tarjeta,Dueño)"
-           "VALUES ('",tarjeta1,"',",userid,");") 
+    nombre=input("Ingrese un nombre de usuario:")
+    buffer=user_list(nombre)
+    while nombre==buffer:
+        nombre=input("El nombre elegido esta ocupado, Ingrese otro nombre de usuario:")
+        buffer=user_list(nombre)
+    else:    
+    #crea una tabla para el usuario nuevo con su nombre y comillas
+    #ej jorge crea la tabla "'jorge'"
+        cnx = mysql.connector.connect(user='root',
+                                    password='Leo008008',
+                                    host='localhost',
+                                    database='cardio')
+        curA = cnx.cursor(buffered=True)
+        nombre_usuario=(buffer,)
+        tarjeta1=(input("hola %s que apodo queres ponerle a tu tarjeta?:"%nombre_usuario),)
+        TABLES = {}
+        TABLES['tabla_usuario'] = (
+            "CREATE TABLE `%s` ("
+            "  `id_compra` int PRIMARY KEY NOT NULL AUTO_INCREMENT,"
+            "  `nombre_compra` varchar(20) NOT NULL,"
+            "  `precio_total` int NOT NULL,"
+            "  `cuotas_total` int NOT NULL,"
+            "  `cuotas_pagadas` date NOT NULL,"
+            "  `tarjeta_usada` int,"
+            "  FOREIGN KEY(`tarjeta_usada`) REFERENCES tarjetas(`id_tarjeta`) ON DELETE SET NULL"
+            "); ENGINE=InnoDB")    
+        tabla_nueva=TABLES['tabla_usuario']
+        curA.execute(tabla_nueva,nombre_usuario)
+        curA.close()
+        cnx.close()
+        #Busca el user id en user_list
+        cnx = mysql.connector.connect(user='root',
+                                    password='Leo008008',
+                                    host='localhost',
+                                    database='cardio')
+        curB = cnx.cursor(buffered=True)
+        useridsearch=("SELECT user_id FROM lista_usuarios" 
+                      "WHERE nombre_usuario=`%s`;")
+        curB.execute(useridsearch,nombre_usuario)
+        useridinsert=curB
+        curB.close()
+        cnx.close()
+        #ingresa el user_id y su tarjeta en la tabla de tarjetas
+        cnx = mysql.connector.connect(user='root',
+                                    password='Leo008008',
+                                    host='localhost',
+                                    database='cardio')
+        curC = cnx.cursor(buffered=True)
+        query=("INSERT INTO tarjetas (nombre_tarjeta,Dueño)"
+               "VALUES ('%s',%d);")
+        curC.execute(query,(tarjeta1,useridinsert))
+        curC.close()
+        cnx.close()
     
-    
-   
-
-
-    
-    
-    
+new_user()
