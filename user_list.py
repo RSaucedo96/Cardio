@@ -24,10 +24,10 @@ else:
   cnx.close()
 
 def user_list(nombre_usuario):
+    query = ("SELECT nombre_usuario FROM lista_usuarios")
     buffer=str(nombre_usuario)
-    user_list=[]
-    if buffer in user_list:
+    if buffer in query:
         return(nombre_usuario)
     else:    
-        user_list.append(buffer)
+        query=("INSERT INTO lista_usuarios (nombre_usuario) VALUES ('",nombre_usuario,"');") 
             

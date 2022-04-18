@@ -41,7 +41,12 @@ def new_user():
     "  `tarjeta_usada` int NOT NULL,"
     "  FOREIGN KEY(`tarjeta_usada`) REFERENCES tarjetas(id_tarjeta) ON DELETE SET NULL"
     "  PRIMARY KEY (`id_compra`)"
-    ") ENGINE=InnoDB")
+    ") ENGINE=InnoDB")    
+    userid=("SELECT user_id FROM lista_usuarios" 
+           "WHERE nombre_usuario='",nombre_usuario,"';")
+    query=("INSERT INTO tarjetas (nombre_tarjeta,Dueño)"
+           "VALUES ('",tarjeta1,"',",userid,");") 
+    
     
    
 
