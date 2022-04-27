@@ -13,9 +13,9 @@ def user_list(nombre):
                               host='localhost',
                               database='cardio')
     curA = cnx.cursor(buffered=True)
-    lista_usuarios="SELECT nombre_usuario FROM lista_usuarios;"
+    lista_usuarios="SELECT nombre_usuario FROM lista_usuarios"
     curA.execute(lista_usuarios)
-    for (nombre_usuario) in curA:
+    for nombre_usuario in curA:
         if nombre==nombre_usuario:
             curA.close()
             cnx.close()
@@ -28,10 +28,12 @@ def user_list(nombre):
                               password='Leo008008',
                               host='localhost',
                               database='cardio')
-    curB = cnx.cursor(buffered=True)
+    curB = cnx.cursor()
     agrega_nombre=("INSERT INTO lista_usuarios (nombre_usuario)"
-                   "VALUES ('%s');")
-    curB.execute=(agrega_nombre,nombre_usuario_tupple)
+                   "VALUES (%s)")
+    curB.execute(agrega_nombre,nombre_usuario_tupple)
+    user_id = curB.lastrowid
+    cnx.commit()
     curB.close()
     cnx.close()
     return "ok"

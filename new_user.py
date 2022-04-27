@@ -22,7 +22,7 @@ def new_user():
                                     database='cardio')
         curA = cnx.cursor(buffered=True)
         nombre_usuario=(nombre,)
-        tarjeta1=(input("hola %s que apodo queres ponerle a tu tarjeta?:"%nombre_usuario),)
+        tarjeta1=input("hola %s que apodo queres ponerle a tu tarjeta?:"%nombre_usuario)
         TABLES = {}
         TABLES['tabla_usuario'] = (
             "CREATE TABLE `%s` ("
@@ -43,22 +43,20 @@ def new_user():
                                     password='Leo008008',
                                     host='localhost',
                                     database='cardio')
-        curB = cnx.cursor(buffered=True)
-        useridsearch=("SELECT user_id FROM lista_usuarios" 
-                      "WHERE nombre_usuario=`%s`;")
-        curB.execute(useridsearch,nombre_usuario)
-        useridinsert=curB
-        curB.close()
-        cnx.close()
-        #ingresa el user_id y su tarjeta en la tabla de tarjetas
-        cnx = mysql.connector.connect(user='root',
-                                    password='Leo008008',
-                                    host='localhost',
-                                    database='cardio')
+        curD = cnx.cursor(buffered=True)
+        useridsearch=("SELECT MAX(user_id) FROM lista_usuarios")
+        curD.execute(useridsearch)
+        user_id=max(curD.fetchone())
         curC = cnx.cursor(buffered=True)
-        query=("INSERT INTO tarjetas (nombre_tarjeta,Dueño)"
-               "VALUES ('%s',%d);")
-        curC.execute(query,(tarjeta1,useridinsert))
+        query=("INSERT INTO tarjetas_usuario (nombre_tarjeta,Dueño)"
+               "VALUES (%(nombre_tarjeta)s,%(Dueño)s)")
+        data_tarjeta={
+            'nombre_tarjeta':tarjeta1,
+            'Dueño':user_id,     
+            }
+        curC.execute(query,data_tarjeta)
+        cnx.commit()
+        curD.close()
         curC.close()
         cnx.close()
     
