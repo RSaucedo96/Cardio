@@ -7,33 +7,35 @@ asi lo ingresa a la base de datos
 """
 
 import mysql.connector
-def user_list(nombre):
+
+
+def user_list(name):
     cnx = mysql.connector.connect(user='root',
-                              password='Leo008008',
-                              host='localhost',
-                              database='cardio')
-    curA = cnx.cursor(buffered=True)
-    lista_usuarios="SELECT nombre_usuario FROM lista_usuarios"
-    curA.execute(lista_usuarios)
-    for nombre_usuario in curA:
-        if nombre==nombre_usuario:
-            curA.close()
+                                  password='Leo008008',
+                                  host='localhost',
+                                  database='cardio')
+    cur_a = cnx.cursor(buffered=True)
+    user_list = "SELECT nombre_usuario FROM lista_usuarios"
+    cur_a.execute(user_list)
+    for nombre_usuario in cur_a:
+        if name == nombre_usuario:
+            cur_a.close()
             cnx.close()
-            return nombre
-    curA.close()
+            return name
+    cur_a.close()
     cnx.close()
-    
-    nombre_usuario_tupple=(nombre,)
+
+    user_name_tupple = (name,)
     cnx = mysql.connector.connect(user='root',
-                              password='Leo008008',
-                              host='localhost',
-                              database='cardio')
-    curB = cnx.cursor()
-    agrega_nombre=("INSERT INTO lista_usuarios (nombre_usuario)"
-                   "VALUES (%s)")
-    curB.execute(agrega_nombre,nombre_usuario_tupple)
-    user_id = curB.lastrowid
+                                  password='Leo008008',
+                                  host='localhost',
+                                  database='cardio')
+    cur_b = cnx.cursor()
+    add_name = ("INSERT INTO lista_usuarios (nombre_usuario)"
+                "VALUES (%s)")
+    cur_b.execute(add_name, user_name_tupple)
+    user_id = cur_b.lastrowid
     cnx.commit()
-    curB.close()
+    cur_b.close()
     cnx.close()
     return "ok"
