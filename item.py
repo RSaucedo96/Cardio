@@ -36,7 +36,7 @@ class Item:
         cnx.close()
 
     @classmethod
-    def update_db(cls, data_item: dict):
+    def update_to_db(cls, data_item: dict):
         cnx = mysql.connector.connect(user=cons.DBUSER,
                                       password=cons.DBPW,
                                       host=cons.DBHOST,
