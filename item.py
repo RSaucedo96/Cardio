@@ -1,6 +1,7 @@
 import mysql.connector
 import constants as cons
 
+
 class Item:
     def __init__(self, name: str, price: float, total_payments=0, payments_done=0):
         # Run validations to the received arguments

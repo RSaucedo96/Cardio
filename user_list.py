@@ -1,11 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Apr 13 18:00:44 2022
-Checkea si el nombre de usuario ya existe en la lista de usuarios de no ser
-asi lo ingresa a la base de datos
-@author: Riki
-"""
-
 import mysql.connector
 import constants as cons
 

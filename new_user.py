@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-la funcion crea una tabla para el nuevo usuario.
-Created on Tue Apr 12 11:37:31 2022
-
-@author: Riki
-"""
 import mysql.connector
 from user_list import user_list
 import constants as cons
@@ -17,15 +11,15 @@ def new_user():
         name = input("El nombre elegido esta ocupado, Ingrese otro nombre de usuario:")
         buffer = user_list(name)
     else:    
-    #crea una tabla para el usuario nuevo con su nombre y comillas
-    #ej jorge crea la tabla "'jorge'"
+        # Creates a table for the new user called like the user
+        # example creates a table called "'jorge'" for user jorge
         cnx = mysql.connector.connect(user=cons.DBUSER,
                                       password=cons.DBPW,
                                       host=cons.DBHOST,
                                       database=cons.DBNAME)
         cur_a = cnx.cursor(buffered=True)
         user_name = (name,)
-        card = input("hola %s que apodo queres ponerle a tu tarjeta?:" %user_name)
+        card = input("Hello %s, how do you wanna name your card?:" % user_name)
         TABLES = {}
         TABLES['tabla_usuario'] = (
             "CREATE TABLE `%s` ("

@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Apr 13 16:38:02 2022
-Menu Inicial
-@author: Riki
-"""
 from new_user import new_user
 from delete_user import delete_user
 from user_menu import user_menu
