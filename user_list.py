@@ -7,16 +7,17 @@ asi lo ingresa a la base de datos
 """
 
 import mysql.connector
+import constants as cons
 
 
 def user_list(name):
-    cnx = mysql.connector.connect(user='root',
-                                  password='Leo008008',
-                                  host='localhost',
-                                  database='cardio')
+    cnx = mysql.connector.connect(user=cons.DBUSER,
+                                  password=cons.DBPW,
+                                  host=cons.DBHOST,
+                                  database=cons.DBNAME)
     cur_a = cnx.cursor(buffered=True)
-    user_list = "SELECT nombre_usuario FROM lista_usuarios"
-    cur_a.execute(user_list)
+    user_list_from_database = "SELECT nombre_usuario FROM lista_usuarios"
+    cur_a.execute(user_list_from_database)
     for nombre_usuario in cur_a:
         if name == nombre_usuario:
             cur_a.close()
@@ -25,15 +26,15 @@ def user_list(name):
     cur_a.close()
     cnx.close()
 
-    user_name_tupple = (name,)
-    cnx = mysql.connector.connect(user='root',
-                                  password='Leo008008',
-                                  host='localhost',
-                                  database='cardio')
+    user_name_tuple = (name,)
+    cnx = mysql.connector.connect(user=cons.DBUSER,
+                                  password=cons.DBPW,
+                                  host=cons.DBHOST,
+                                  database=cons.DBNAME)
     cur_b = cnx.cursor()
     add_name = ("INSERT INTO lista_usuarios (nombre_usuario)"
                 "VALUES (%s)")
-    cur_b.execute(add_name, user_name_tupple)
+    cur_b.execute(add_name, user_name_tuple)
     user_id = cur_b.lastrowid
     cnx.commit()
     cur_b.close()

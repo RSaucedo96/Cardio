@@ -1,5 +1,5 @@
 import mysql.connector
-
+import constants as cons
 
 class Item:
     def __init__(self, name: str, price: float, total_payments=0, payments_done=0):
@@ -15,10 +15,10 @@ class Item:
 
     @classmethod
     def instantiate_from_db(cls, user_name: str):
-        cnx = mysql.connector.connect(user='root',
-                                      password='Leo008008',
-                                      host='localhost',
-                                      database='cardio')
+        cnx = mysql.connector.connect(user=cons.DBUSER,
+                                      password=cons.DBPW,
+                                      host=cons.DBHOST,
+                                      database=cons.DBNAME)
         cur_a = cnx.cursor(buffered=True)
         user_table = "SELECT * FROM %s "
         cur_a.execute(user_table, user_name)
@@ -36,10 +36,10 @@ class Item:
 
     @classmethod
     def update_db(cls, data_item: dict):
-        cnx = mysql.connector.connect(user='root',
-                                      password='Leo008008',
-                                      host='localhost',
-                                      database='cardio')
+        cnx = mysql.connector.connect(user=cons.DBUSER,
+                                      password=cons.DBPW,
+                                      host=cons.DBHOST,
+                                      database=cons.DBNAME)
         cur_a = cnx.cursor(buffered=True)
         add_item = ("INSERT INTO %s "
                     "(nombre_compra, precio_total, cuotas_total, cuotas_pagadas) "

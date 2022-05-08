@@ -7,6 +7,7 @@ Created on Tue Apr 12 11:37:31 2022
 """
 import mysql.connector
 from user_list import user_list
+import constants as cons
 
 
 def new_user():
@@ -18,10 +19,10 @@ def new_user():
     else:    
     #crea una tabla para el usuario nuevo con su nombre y comillas
     #ej jorge crea la tabla "'jorge'"
-        cnx = mysql.connector.connect(user='root',
-                                      password='Leo008008',
-                                      host='localhost',
-                                      database='cardio')
+        cnx = mysql.connector.connect(user=cons.DBUSER,
+                                      password=cons.DBPW,
+                                      host=cons.DBHOST,
+                                      database=cons.DBNAME)
         cur_a = cnx.cursor(buffered=True)
         user_name = (name,)
         card = input("hola %s que apodo queres ponerle a tu tarjeta?:" %user_name)
@@ -37,14 +38,14 @@ def new_user():
             "  FOREIGN KEY(`tarjeta_usada`) REFERENCES tarjetas(`id_tarjeta`) ON DELETE SET NULL"
             "); ENGINE=InnoDB")    
         tabla_nueva = TABLES['tabla_usuario']
-        cur_a.execute(tabla_nueva,user_name)
+        cur_a.execute(tabla_nueva, user_name)
         cur_a.close()
         cnx.close()
         #Busca el user id en user_list
-        cnx = mysql.connector.connect(user='root',
-                                    password='Leo008008',
-                                    host='localhost',
-                                    database='cardio')
+        cnx = mysql.connector.connect(user=cons.DBUSER,
+                                      password=cons.DBPW,
+                                      host=cons.DBHOST,
+                                      database=cons.DBNAME)
         cur_d = cnx.cursor(buffered=True)
         user_id_search = ("SELECT MAX(user_id) FROM lista_usuarios")
         cur_d.execute(user_id_search)
