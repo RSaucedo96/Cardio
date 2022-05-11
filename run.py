@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from new_user import new_user
-from delete_user import delete_user
-from user_menu import user_menu
+from user import User
+from item import Item
+
+
 menu = {'1': "New User.", '2': "Delete User.", '3': "Find User", '4': "Exit"}
 while True:
     opciones = menu.keys()
@@ -11,12 +12,16 @@ while True:
 
     selection=input("Choose an option:")
     if selection =='1':
-      new_user()
+      users = {}
+      name=input("Welcome, What username will you use?:")
+      users[name]=User(name)
+      users[name].new_user()
+
     elif selection == '2':
-      delete_user
+      #delete_user
      elif selection == '3':
-      eleccion_usuario=input("Ingrese su nombre de usuario:")
-      user_menu(eleccion_usuario)
+      #eleccion_usuario=input("Ingrese su nombre de usuario:")
+      #user_menu(eleccion_usuario)
     elif selection == '4':
       break
     else:

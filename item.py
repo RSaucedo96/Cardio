@@ -3,13 +3,13 @@ import constants as cons
 
 
 class Item:
-    def __init__(self, name: str, price: float, total_payments=0, payments_done=0):
+    def __init__(self, item_name: str, price: float, total_payments=0, payments_done=0):
         # Run validations to the received arguments
         assert price >= 0, f"Price {price} is not greater than or equal to zero!"
         assert total_payments >= 0, f"Quantity {total_payments} is not greater or equal to zero!"
         assert payments_done >= 0, f"Quantity {payments_done} is not greater or equal to zero!"
         # Assign to self object
-        self.name = name
+        self.item_name = item_name
         self.price = price
         self.tp = total_payments
         self.pd = payments_done
