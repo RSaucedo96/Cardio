@@ -17,12 +17,29 @@ class User:
         cur_a = cnx.cursor(buffered=True)
         user_list_from_database = "SELECT nombre_usuario FROM lista_usuarios"
         cur_a.execute(user_list_from_database)
-        while self.user_name in cur_a
+        while self.user_name in cur_a:
             self.user_name = input("That username is not available, please choose a different one:")
         cur_a.close()
         self.user_list_add()
         self.create_user_table()
         self.new_card()
+        cnx.close()
+        return
+
+    def validate_user(self):
+        cnx = mysql.connector.connect(user=cons.DBUSER,
+                                      password=cons.DBPW,
+                                      host=cons.DBHOST,
+                                      database=cons.DBNAME)
+        cur_a = cnx.cursor(buffered=True)
+        user_list_from_database = "SELECT nombre_usuario FROM lista_usuarios"
+        cur_a.execute(user_list_from_database)
+        if self.user_name in cur_a:
+            return
+        else:
+            while self.user_name not in cur_a:
+                self.user_name = input("That username is not registered")
+        cur_a.close()
         cnx.close()
         return
 
@@ -36,7 +53,6 @@ class User:
         add_name = ("INSERT INTO lista_usuarios (nombre_usuario)"
                     "VALUES (%s)")
         cur_b.execute(add_name, user_name_tuple)
-        user_id = cur_b.lastrowid
         cnx.commit()
         cur_b.close()
         cnx.close()
@@ -49,14 +65,14 @@ class User:
                                       database=cons.DBNAME)
         cur_a = cnx.cursor(buffered=True)
         user_name_tuple = (self.user_name,)
-        new_table_query= """CREATE TABLE %s (
-                        id_compra int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-                        nombre_compra varchar(20) NOT NULL,
-                        precio_total int NOT NULL,
-                        cuotas_total int NOT NULL,
-                        cuotas_pagadas date NOT NULL,
-                        tarjeta_usada int,
-                        FOREIGN KEY(tarjeta_usada) REFERENCES tarjetas(id_tarjeta) ON DELETE SET NULL) """
+        new_table_query = """CREATE TABLE %s (
+                            id_compra int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+                            nombre_compra varchar(20) NOT NULL,
+                            precio_total int NOT NULL,
+                            cuotas_total int NOT NULL,
+                            cuotas_pagadas date NOT NULL,
+                            tarjeta_usada int,
+                            FOREIGN KEY(tarjeta_usada) REFERENCES tarjetas(id_tarjeta) ON DELETE SET NULL) """
         cur_a.execute(new_table_query, user_name_tuple)
         cnx.commit()
         cur_a.close()
