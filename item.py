@@ -35,7 +35,7 @@ class Item:
         cur_a.close()
         cnx.close()
 
-    def update_item_to_db(self):
+    def update_item_to_db(self, user_name):
         cnx = mysql.connector.connect(user=cons.DBUSER,
                                       password=cons.DBPW,
                                       host=cons.DBHOST,
@@ -48,10 +48,10 @@ class Item:
                     cuotas_pagadas: self.pd
         }
 
-        add_item = ("INSERT INTO %s "
+        add_item = ("INSERT INTO %(user_name)s "
                     "(nombre_compra, precio_total, cuotas_total, cuotas_pagadas) "
                     "VALUES (%(nombre_compra)s, %(precio_total)s, %(cuotas_total)s, %(cuotas_pagadas)s)")
-        cur_a.execute(add_item, data_item)
+        cur_a.execute(add_item, user_name, data_item)
         cnx.commit()
         cur_a.close()
         cnx.close()

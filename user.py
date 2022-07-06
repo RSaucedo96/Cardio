@@ -65,14 +65,14 @@ class User:
                                       database=cons.DBNAME)
         cur_a = cnx.cursor(buffered=True)
         user_name_tuple = (self.user_name,)
-        new_table_query = """CREATE TABLE %s (
-                            id_compra int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-                            nombre_compra varchar(20) NOT NULL,
-                            precio_total int NOT NULL,
-                            cuotas_total int NOT NULL,
-                            cuotas_pagadas date NOT NULL,
-                            tarjeta_usada int,
-                            FOREIGN KEY(tarjeta_usada) REFERENCES tarjetas(id_tarjeta) ON DELETE SET NULL) """
+        new_table_query = ('''CREATE TABLE %s(
+                             id_compra int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+                             nombre_compra varchar(20) NOT NULL,
+                             precio_total int NOT NULL,
+                             cuotas_total int NOT NULL,
+                             cuotas_pagadas date NOT NULL,
+                             tarjeta_usada int,
+                             FOREIGN KEY(tarjeta_usada) REFERENCES tarjetas(id_tarjeta) ON DELETE SET NULL) ''')
         cur_a.execute(new_table_query, user_name_tuple)
         cnx.commit()
         cur_a.close()

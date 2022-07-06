@@ -45,7 +45,7 @@ def user_menu(user_select):
             item_total_payments = int(input("How many payments?:"))
             item_payments_done = int(input("How many of those payments did you complete? if the answer is none input 0:"))
             items[item_name] = Item(item_name, item_cost, item_total_payments, item_payments_done)
-            items[item_name].update_item_to_db()
+            items[item_name].update_item_to_db(user_select)
 
         elif selection == '2':
             pass
@@ -59,4 +59,5 @@ def user_menu(user_select):
             print("Error, unknown option selected")
 
 
-main()
+if __name__ == '__main__':
+    main()
